@@ -22,8 +22,6 @@ connection.connect(function (err) {
   }
 });
 
-//populateTables(connection);
-
 const app = express()
 const port = 5000
 
@@ -154,6 +152,10 @@ app.get('/deletePost', (req, res) => {
     }
   );
 })
+
+// add new user API route here
+
+// add user auth API route here
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
