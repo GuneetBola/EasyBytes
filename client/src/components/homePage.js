@@ -3,7 +3,6 @@ import MainNavBar from "./mainNavbar";
 import AllRecipes from "./allRecipes";
 import SelectionModel from "./selectionModel";
 import { useNavigate, useLocation } from "react-router-dom";
-import { alignProperty } from "@mui/material/styles/cssUtils";
 
 const Home = () => {
   const [data, setData] = useState({
@@ -20,8 +19,6 @@ const Home = () => {
       navigate("/");
     }
   }, []);
-
-  let two = 2;
 
   return (
     <div className="Home">
