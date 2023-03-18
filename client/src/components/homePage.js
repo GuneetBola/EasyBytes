@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import MainNavBar from "./mainNavbar";
 import AllRecipes from "./allRecipes";
 import SelectionModel from "./selectionModel";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState({
     cuisine: "",
     meal_type: "",
     diet_label: "",
     sort: "",
   });
-  const navigate = useNavigate();
-  const location = useLocation();
+
+  const userIDRef = useRef(null);
+
+  if (location.state) {
+    userIDRef.current = location.state.userId;
+  }
 
   useEffect(() => {
     if (!sessionStorage.getItem("authenticated")) {
@@ -31,7 +37,7 @@ const Home = () => {
           justifyContent: "center",
         }}
       >
-        Welcome to EasyBytes user {location.state.userId}
+        Welcome to EasyBytes user {userIDRef.current}
       </h4>
       <SelectionModel
         style={{ padding: 300 }}

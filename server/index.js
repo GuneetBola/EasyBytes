@@ -1,8 +1,7 @@
 import express from "express";
 import mysql2 from "mysql2";
 import cors from "cors";
-import bcrypt from 'bcrypt'
-
+import bcrypt from "bcrypt";
 
 const connection = mysql2.createConnection({
   host: "localhost",
@@ -126,7 +125,7 @@ app.get("/createPost", (req, res) => {
   let createdAt = mySQLTime;
   let updatedAt = mySQLTime;
   console.log(recipeID, postID);
-  console.log(createdAt, updatedAt)
+  console.log(createdAt, updatedAt);
   connection.query(
     `INSERT INTO recipes(name, cuisine, cook_time, ingredients, instructions, calories, meal_type, health_label, health_score, servings, recipe_picture) VALUE ('${dishName}', '${cuisine}', ${cookTime}, '${ingredients}', '${instructions}', ${calories}, '${mealType}', '${healthLabel}', ${healthScore}, ${servings}, '${picture}');`,
     function (err, results, fields) {
@@ -158,7 +157,7 @@ app.post("/register", async (req, res) => {
   let password = req.body.password;
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
-  
+
   const hash = await bcrypt.hash(password, 7);
 
   let insertUserQuery = `INSERT INTO users (user_name, user_password, first_name, last_name, 
@@ -187,23 +186,42 @@ app.post("/login", async (req, res) => {
 
   const hash = await bcrypt.hash(password, 7);
 
-  connection.query(
-    insertUserQuery,
-    [userName],
-    async (err, result, fields) => {
-      // if there's an error getting the user, then prompt the user to try again - user most likely not registered
-      if (err) {
-        res.send("invalid");
-      } else {
-        const isMatch = await bcrypt.compare(password, result[0].user_password)
-        if (result.length > 0 && isMatch) {
+  connection.query(insertUserQuery, [userName], async (err, result, fields) => {
+    // if there's an error getting the user, then prompt the user to try again - user most likely not registered
+    if (err) {
+      res.send("invalid");
+    } else {
+      if (result.length > 0) {
+        const isMatch = await bcrypt.compare(password, result[0].user_password);
+        if (isMatch) {
           res.send(result);
         } else {
           res.send("invalid");
         }
+      } else {
+        res.send("invalid");
       }
     }
-  );
+  });
+});
+
+// fetch user data
+app.post("/userData", (req, res) => {
+  let userID = req.body.userID;
+  let fetchUserQuery = `SELECT * FROM recipe_db.publicuserinfo WHERE user_id = ?`;
+
+  connection.query(fetchUserQuery, [userID], (err, result, fields) => {
+    // if there's an error getting the user, then prompt the user to try again - user most likely not registered
+    if (err) {
+      res.send("invalid");
+    } else {
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        res.send("invalid");
+      }
+    }
+  });
 });
 
 app.listen(port, () => {
