@@ -81,7 +81,7 @@ const MainNavBar = () => {
 
   const navigateTo = (page) => {
     if (page === "Recipes") {
-      navigate("/");
+      navigate("/home");
     }
     if (page === "My Recipes") {
       navigate("/myRecipes");
@@ -116,7 +116,7 @@ const MainNavBar = () => {
               variant="h5"
               noWrap
               component="a"
-              href="/"
+              href="/home"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -133,7 +133,7 @@ const MainNavBar = () => {
               variant="h6"
               noWrap
               component="a"
-              href="/"
+              href="/home"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
