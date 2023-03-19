@@ -39,17 +39,16 @@ export default function FormDialog(props) {
       icon: errIcon,
       title: message,
       showConfirmButton: false,
-      timer: 1500,
+      timer: 2000,
     });
   };
 
   const updateUser = () => {
     if (firstName === "" || lastName === "") {
-      Swal.fire({
-        position: "top",
-        icon: "error",
-        text: "First Name and Last Name are required fields. Please fill them out!",
-      });
+      props.toggleShow();
+      let message = "Profile not updated. First and last name are required fields.";
+      let errIcon = "error";
+      alertError(message, errIcon);
     } else {
       Axios.post("http://localhost:5000/updateUserData", {
         userID: sessionStorage.getItem("authenticated"),
