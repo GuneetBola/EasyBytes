@@ -1,4 +1,6 @@
 import * as React from "react";
+import Axios from "axios";
+import Swal from "sweetalert2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
   Button,
@@ -29,6 +31,48 @@ export default function FormDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const alertError = (message, errIcon) => {
+    Swal.fire({
+      position: "top",
+      icon: errIcon,
+      title: message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  const updateUser = () => {
+    if (firstName === "" || lastName === "") {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        text: "First Name and Last Name are required fields. Please fill them out!",
+      });
+    } else {
+      Axios.post("http://localhost:5000/updateUserData", {
+        userID: sessionStorage.getItem("authenticated"),
+        firstName: firstName,
+        lastName: lastName,
+        preferenceOne: preferenceOne,
+        preferenceTwo: preferenceTwo,
+        preferenceThree: preferenceThree,
+      }).then((response) => {
+        // console.log(response.data[0]["user_id"]);
+        if (response.data === "invalid") {
+          props.toggleShow();
+          let message = "Failed to update your data. Please try again.";
+          let errIcon = "error";
+          alertError(message, errIcon);
+        } else {
+          props.toggleShow();
+          let message = "Your profile has been updated!";
+          let errIcon = "success";
+          alertError(message, errIcon);
+        }
+      });
+    }
   };
 
   return (
@@ -73,6 +117,7 @@ export default function FormDialog(props) {
             <div>
               <TextField
                 autoFocus
+                required
                 margin="normal"
                 id="name"
                 label="First Name"
@@ -85,6 +130,7 @@ export default function FormDialog(props) {
               />
               <TextField
                 autoFocus
+                required
                 margin="normal"
                 id="name"
                 defaultValue={props.userData["last_name"]}
@@ -142,7 +188,7 @@ export default function FormDialog(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={props.toggleShow}>Cancel</Button>
-          <Button onClick={props.toggleShow}>Update</Button>
+          <Button onClick={updateUser}>Update</Button>
         </DialogActions>
       </Dialog>
     </div>

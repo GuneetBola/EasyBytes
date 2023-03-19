@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import Axios from "axios";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import {
   BoldLink,
@@ -30,6 +31,25 @@ export function SignupForm(props) {
     }
   }, []);
 
+  const alertError = (message) => {
+    let timerInterval;
+    Swal.fire({
+      position: "top",
+      icon: "error",
+      html: message,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        timerInterval = setInterval(() => {
+          Swal.getTimerLeft();
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  };
+
   const register = () => {
     if (
       userName === "" ||
@@ -37,9 +57,8 @@ export function SignupForm(props) {
       firstName === "" ||
       lastName === ""
     ) {
-      alert(
-        "One or more fields is blank. \nMust fill in all the information to create an account!"
-      );
+      let message = "Must fill in all the information to create an account!";
+      alertError(message);
     } else {
       Axios.post("http://localhost:5000/register", {
         userName: userName,
@@ -49,9 +68,9 @@ export function SignupForm(props) {
       }).then((response) => {
         // console.log(response);
         if (response.data === "invalid") {
-          alert(
-            "Username already taken. \nPlease try again with another user name."
-          );
+          let message =
+            "Username already taken. Please try again with another user name.";
+          alertError(message);
         } else {
           Axios.post("http://localhost:5000/login", {
             userName: userName,

@@ -224,6 +224,42 @@ app.post("/userData", (req, res) => {
   });
 });
 
+// fetch user data
+app.post("/updateUserData", (req, res) => {
+  let userID = req.body.userID;
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  let preferenceOne = req.body.preferenceOne;
+  let preferenceTwo = req.body.preferenceTwo;
+  let preferenceThree = req.body.preferenceThree;
+  let updateUserQuery = `UPDATE recipe_db.publicuserinfo SET first_name = ?, last_name = ?, 
+  preference_one = ?, preference_two = ?, preference_three = ? WHERE user_id = ?`;
+
+  connection.query(
+    updateUserQuery,
+    [
+      firstName,
+      lastName,
+      preferenceOne,
+      preferenceTwo,
+      preferenceThree,
+      userID,
+    ],
+    (err, result, fields) => {
+      // if there's an error getting the user, then prompt the user to try again - user most likely not registered
+      if (err) {
+        res.send("invalid");
+      } else {
+        if (result.affectedRows > 0) {
+          res.send(result);
+        } else {
+          res.send("invalid");
+        }
+      }
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

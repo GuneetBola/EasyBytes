@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import Swal from "sweetalert2";
 
 import {
   BoldLink,
@@ -29,11 +30,29 @@ export function LoginForm(props) {
     }
   }, []);
 
+  const alertError = (message) => {
+    let timerInterval;
+    Swal.fire({
+      position: "top",
+      icon: "error",
+      html: message,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        timerInterval = setInterval(() => {
+          Swal.getTimerLeft();
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  };
+
   const login = () => {
     if (userName === "" || password === "") {
-      alert(
-        "One or more fields is blank. \nMust fill in all the information to login!"
-      );
+      let message = "Both username and password fields are required!";
+      alertError(message);
     } else {
       Axios.post("http://localhost:5000/login", {
         userName: userName,
@@ -41,7 +60,8 @@ export function LoginForm(props) {
       }).then((response) => {
         // console.log(response.data[0]["user_id"]);
         if (response.data === "invalid") {
-          alert("Username or password don't match. \nPlease try again!");
+          let message = "Username or password don't match. Please try again!";
+          alertError(message);
         } else {
           sessionStorage.setItem("authenticated", response.data[0]["user_id"]);
           let uID = sessionStorage.getItem("authenticated");
