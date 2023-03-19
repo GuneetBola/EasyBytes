@@ -18,8 +18,8 @@ import UserProfileModal from "./userProfileModal";
 import { useEffect } from "react";
 import Axios from "axios";
 
-const pages = ["Recipes", "Your Recipes"];
-const settings = ["Profile", "Account", "Favourites", "Logout"];
+const pages = ["Recipes", "My Recipes"];
+const settings = ["Profile", "Favourites", "Logout"];
 
 const MainNavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -83,7 +83,7 @@ const MainNavBar = () => {
     if (page === "Recipes") {
       navigate("/");
     }
-    if (page === "Your Recipes") {
+    if (page === "My Recipes") {
       navigate("/myRecipes");
     }
   };
