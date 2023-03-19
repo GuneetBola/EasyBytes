@@ -28,6 +28,9 @@ export default function FormDialog(props) {
   const [preferenceThree, setPreferenceThree] = React.useState(
     props.userData["preference_three"]
   );
+  const [userPicture, setUserPicture] = React.useState(
+    props.userData["user_picture"]
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -57,6 +60,7 @@ export default function FormDialog(props) {
         preferenceOne: preferenceOne,
         preferenceTwo: preferenceTwo,
         preferenceThree: preferenceThree,
+        userPicture: userPicture,
       }).then((response) => {
         // console.log(response.data[0]["user_id"]);
         if (response.data === "invalid") {
@@ -139,6 +143,19 @@ export default function FormDialog(props) {
                 label="Last Name"
                 variant="filled"
                 sx={{ m: 1, width: "25ch" }}
+              />
+              <TextField
+                id="filled-multiline-static"
+                label="Profile Picture URL"
+                multiline
+                rows={1}
+                defaultValue={props.userData["user_picture"]}
+                onChange={(e) =>
+                  setUserPicture(e.target.value, console.log(userPicture))
+                }
+                fullWidth
+                sx={{ m: 1, width: "51.69ch" }}
+                variant="filled"
               />
               <TextField
                 id="filled-multiline-static"

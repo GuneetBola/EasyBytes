@@ -32,6 +32,7 @@ const MainNavBar = () => {
     preference_one: "",
     preference_two: "",
     preference_three: "",
+    user_picture: "",
   });
 
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ const MainNavBar = () => {
           preference_one: response.data[0]["preference_one"],
           preference_two: response.data[0]["preference_two"],
           preference_three: response.data[0]["preference_three"],
+          user_picture: response.data[0]["user_picture"],
         });
         // console.log(userData);
       }
@@ -219,7 +221,7 @@ const MainNavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Easy Bytes" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Easy Bytes" src={userData["user_picture"]} />
                 </IconButton>
               </Tooltip>
               <Menu

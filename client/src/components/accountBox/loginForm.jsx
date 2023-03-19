@@ -78,6 +78,7 @@ export function LoginForm(props) {
       <FormContainer>
         <Input
           type="text"
+          margin= "5px"
           placeholder="User Name"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
@@ -90,16 +91,15 @@ export function LoginForm(props) {
         />
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
-      <MutedLink href="#">Forget your password?</MutedLink>
       <Marginer direction="vertical" margin="1.6em" />
       <SubmitButton type="submit" onClick={login}>
-        Signin
+        Login
       </SubmitButton>
       <Marginer direction="vertical" margin="1em" />
       <MutedLink href="#">
-        Don't have an accoun?{" "}
+        Don't have an account?{" "}
         <BoldLink href="#" onClick={switchToSignup}>
-          Signup
+          Sign up
         </BoldLink>
       </MutedLink>
     </BoxContainer>

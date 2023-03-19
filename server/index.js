@@ -232,8 +232,9 @@ app.post("/updateUserData", (req, res) => {
   let preferenceOne = req.body.preferenceOne;
   let preferenceTwo = req.body.preferenceTwo;
   let preferenceThree = req.body.preferenceThree;
+  let userPicture = req.body.userPicture;
   let updateUserQuery = `UPDATE recipe_db.publicuserinfo SET first_name = ?, last_name = ?, 
-  preference_one = ?, preference_two = ?, preference_three = ? WHERE user_id = ?`;
+  preference_one = ?, preference_two = ?, preference_three = ?, user_picture = ? WHERE user_id = ?`;
 
   connection.query(
     updateUserQuery,
@@ -243,6 +244,7 @@ app.post("/updateUserData", (req, res) => {
       preferenceOne,
       preferenceTwo,
       preferenceThree,
+      userPicture,
       userID,
     ],
     (err, result, fields) => {
